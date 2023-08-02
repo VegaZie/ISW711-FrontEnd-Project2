@@ -1,0 +1,21 @@
+.button {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  
+    &:hover {
+      background-color: #555;
+    }
+
+    &__icon {
+      width: 18px;
+      height: 18px;
+      margin-right: 0px;
+    }
+  }
+  

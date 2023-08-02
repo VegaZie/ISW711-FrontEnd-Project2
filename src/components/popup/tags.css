@@ -1,0 +1,42 @@
+.rti--container {
+  --rti-bg: #1a1a1a; /* Fondo oscuro */
+  --rti-border: #555; /* Borde gris oscuro */
+  --rti-main: #3182ce; /* Resaltado de azul */
+  --rti-radius: 0.375rem;
+}
+
+.rti--tag {
+  --rti-tag: #3a3a3a; /* Fondo de tags oscuro */
+  --rti-tag-remove: #e53e3e; /* Botón de eliminación rojo */
+  --rti-tag-text: #fff; /* Color de texto para etiquetas */
+  background-color: var(--rti-tag);
+  margin-right: var(--rti-s);
+  color: var(--rti-tag-text); /* Color de texto para etiquetas */
+}
+
+.rti--tag-remove {
+  background-color: var(--rti-tag-remove);
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Estilo para el contenedor principal */
+.rti--container {
+  background-color: var(--rti-bg);
+  border: 1px solid var(--rti-border);
+  border-radius: var(--rti-radius);
+}
+
+/* Estilo para las etiquetas de tags */
+.rti--tag {
+  background-color: var(--rti-tag);
+  margin-right: var(--rti-s);
+  color: var(--rti-tag-text);
+}
+
+/* Estilo para el botón de eliminación */
+.rti--tag-remove {
+  background-color: var(--rti-tag-remove);
+  color: #fff;
+  cursor: pointer;
+}

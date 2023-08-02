@@ -1,0 +1,63 @@
+.register-page {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #111;
+  color: #fff;
+  background-image: linear-gradient(to left, transparent 50%, #ffffff0d 50%);
+  background-size: 20px 20px;
+  overflow: hidden;
+
+  .register-page::before {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background-color: #0000004d;
+    z-index: -1;
+  }
+
+  .register-page::after {
+    content: "";
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    right: -10px;
+    bottom: -10px;
+    background: radial-gradient(
+      circle at 20% 20%,
+      #ffffff1a 10%,
+      transparent 70%
+    );
+    z-index: -1;
+  }
+
+  .register-container {
+    width: 300px;
+    padding: 20px;
+    background-color: #222;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px #0000004d;
+
+    h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+
+      .form-input {
+        margin-bottom: 15px;
+      }
+
+      .button {
+        margin-top: 20px;
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+.navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #272424;
+  padding: 16px;
+
+  &__brand {
+    a {
+      color: #fff;
+      font-size: 20px;
+      font-weight: bold;
+      text-decoration: none;
+    }
+  }
+
+  &__user {
+    display: flex;
+    align-items: center;
+
+    &-icon {
+      width: 24px;
+      height: 24px;
+      margin-right: 8px;
+    }
+
+    &-info {
+      display: flex;
+      flex-direction: column;
+
+      p {
+        margin: 0;
+        font-size: 14px;
+        font-weight: bold;
+      }
+
+      span {
+        font-size: 12px;
+      }
+    }
+  }
+
+  button {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+}
