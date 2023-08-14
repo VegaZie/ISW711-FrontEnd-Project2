@@ -18,9 +18,7 @@ const EmailVerificationPage = () => {
   const [successMessage, setSuccessMessage] = useState("");
 
   useEffect(() => {
-    console.log(location);
     const token = new URLSearchParams(location.search).get("token");
-    console.log(token);
     if (token) {
       axios
         .post(process.env.REACT_APP_EMAIL_VERIFICATION + `?token=${token}`)
@@ -34,7 +32,6 @@ const EmailVerificationPage = () => {
           }
         })
         .catch((error) => {
-          console.error("Email verification error:", error);
           setErrorMessage("Error en la verificación de correo electrónico. ");
           setError(true);
         });
