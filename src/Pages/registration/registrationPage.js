@@ -13,6 +13,7 @@ const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [success, setSuccess] = useState(false);
@@ -35,12 +36,30 @@ const RegisterPage = () => {
       return;
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      setErrorMessage("Ingrese un correo electrónico válido.");
+      setError(true);
+      return;
+    }
+
+    const phoneRegex = /^[0-9]{8,}$/;
+    if (!phoneRegex.test(phoneNumber)) {
+      setErrorMessage(
+        "Ingrese un número de teléfono válido (al menos 8 dígitos)."
+      );
+      setError(true);
+      return;
+    }
+
     const data = {
       name,
       email,
       password,
       role: "user",
       verified: false,
+      phoneNumber: "+506" + phoneNumber,
+      twoStepVerification: true,
     };
 
     axios
@@ -84,6 +103,13 @@ const RegisterPage = () => {
             required
           />
           <FormInput
+            type="tel"
+            label="Número de telefono"
+            value={phoneNumber}
+            onChange={(e) => setPhoneNumber(e.target.value)}
+            required
+          />
+          <FormInput
             type="password"
             label="Contraseña"
             value={password}
@@ -106,10 +132,7 @@ const RegisterPage = () => {
           />
         )}
         {error && (
-          <ErrorMessage
-            message={errorMessage}
-            onAccept={handleAcceptError}
-          />
+          <ErrorMessage message={errorMessage} onAccept={handleAcceptError} />
         )}
       </div>
     </div>
