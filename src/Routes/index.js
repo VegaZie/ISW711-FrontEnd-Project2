@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from "../Pages/login/loginPage";
 import Register from "../Pages/registration/registrationPage";
 import HomePage from "../Pages/home/homePage";
+import EmailVerificationPage from "../Pages/emailVerification/emailVerification";
 import Error from "../Pages/error/errorPage";
 
 const Router = () => {
@@ -16,6 +17,11 @@ const Router = () => {
           errorElement={<Error />}
         />
         <Route
+          path="/email"
+          element={<EmailVerificationPage />}
+          errorElement={<Error />}
+        />
+        <Route
           path="/home"
           element={<HomePage />}
           errorElement={<Error />}
@@ -26,13 +32,3 @@ const Router = () => {
 };
 
 export default Router;
-/*  <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Login />} errorElement={<Error/>}/>
-          <Route path="/home" element={<Home />} errorElement={<Error/>}>
-            <Route path="/home/products" element={<Products />} />
-            <Route path="/home/crud" element={<Crud />} />
-          </Route>
-          
-        </Routes>
-      </BrowserRouter>*/
