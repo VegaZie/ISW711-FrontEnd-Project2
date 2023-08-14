@@ -46,10 +46,14 @@ const LoginPage = () => {
         sessionStorage.setItem("id", response.data.userId);
         sessionStorage.setItem("name", response.data.userName);
 
-        navigate("/home");
+        const twoStepVerification = response.data.twoStep;
+        if (!twoStepVerification) {
+          navigate("/home");
+        } else {
+          navigate("/verification");
+        }
       })
       .catch((errorM) => {
-        console.log(errorM);
         setErrorMessage(
           "Credenciales incorrectas. Por favor, inténtelo de nuevo."
         );
