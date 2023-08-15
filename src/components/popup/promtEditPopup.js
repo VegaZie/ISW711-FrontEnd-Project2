@@ -10,8 +10,7 @@ import "./popup.scss";
 import "./tags.css";
 
 const PromtEditPopup = ({ data, onClose, onSucess, token }) => {
-  const promtID = data._id;
-  console.log(data._id);
+  const promtID = data.id;
   const [editedName, setEditedName] = useState(data.name);
   const [editedInstructions, setEditedInstructions] = useState(
     data.instruction

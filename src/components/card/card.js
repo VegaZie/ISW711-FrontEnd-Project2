@@ -59,7 +59,7 @@ const Card = ({ isAdmin, data, token, onSucess }) => {
     const infoID = data._id;
     const url = isAdmin
       ? process.env.REACT_APP_USER + `?id=${infoID}`
-      : process.env.REACT_APP_PROMTS + `?id=${infoID}`;
+      : process.env.REACT_APP_PROMTS + `?id=${data.id}`;
     axios
       .delete(url, {
         headers: {

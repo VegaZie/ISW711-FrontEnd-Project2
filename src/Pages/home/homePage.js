@@ -56,24 +56,65 @@ const HomePage = () => {
   };
   // Función para obtener los promts o usuarios según el rol
   const fetchData = useCallback(() => {
-    const url = userRole
-      ? process.env.REACT_APP_USER
-      : process.env.REACT_APP_PROMTS + `?userID=${userID}`;
-    axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+    if (userRole) {
+      axios
+        .get(process.env.REACT_APP_USER, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataList(response.data);
+        })
+        .catch(function (error) {
+          setErrorMessage("Algo ha salido mal: " + error);
+          setError(true);
+        });
+    } else {
+      const graphqlQuery = {
+        query: `
+          query GetUserPromts($userID: String!) {
+            getUserPromts(user_id: $userID) {
+              id
+              name
+              model
+              input
+              instruction
+              promt
+              temperature
+              quantity
+              size
+              response
+              imageresponse {
+                url
+              }
+              userID
+              tags
+              type
+            }
+          }
+        `,
+        variables: {
+          userID: userID,
         },
-      })
-      .then(function (response) {
-        // handle success
-        setDataList(response.data);
-      })
-      .catch(function (error) {
-        setErrorMessage("Algo ha salido mal: " + error);
-        setError(true);
-      });
+      };
+
+      axios
+        .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataList(response.data.data.getUserPromts);
+        })
+        .catch(function (error) {
+          setErrorMessage("Algo ha salido mal: " + error);
+          setError(true);
+        });
+    }
   }, [userID, userRole, token]);
+
   // Efecto para obtener la lista de promts o usuarios según el rol
   useEffect(() => {
     fetchData();
@@ -127,8 +168,9 @@ const HomePage = () => {
             {userRole ? (
               <div className="home-page__card-item">
                 {dataList.map((item) => (
+                  
                   <Card
-                    key={item._id}
+                    key={item.id}
                     isAdmin={userRole}
                     data={item}
                     token={token}
@@ -140,7 +182,7 @@ const HomePage = () => {
               <div className="home-page__card-item">
                 {dataList.map((item) => (
                   <Card
-                    key={item._id}
+                    key={item.id}
                     isAdmin={userRole}
                     data={item}
                     token={token}

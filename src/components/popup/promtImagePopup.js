@@ -10,7 +10,7 @@ import "./popup.scss";
 import "./tags.css";
 
 const PromtImagePopup = ({ data, onSucess, onClose, token }) => {
-  const promtID = data._id;
+  const promtID = data.id;
   const [editedName, setEditedName] = useState(data.name);
   const [editedPromt, setEditedPromt] = useState(data.promt);
   const [editedImageType, setEditedImageType] = useState(data.size);

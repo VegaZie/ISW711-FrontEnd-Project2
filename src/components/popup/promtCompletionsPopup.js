@@ -10,7 +10,7 @@ import "./popup.scss";
 import "./tags.css";
 
 const PromtCompletionsPopup = ({ data, onClose, token, onSucess }) => {
-  const promtID = data._id;
+  const promtID = data.id;
   const [editedName, setEditedName] = useState(data.name);
   const [editedTags, setEditedTags] = useState(data.tags);
   const [editedPromt, setEditedPromt] = useState(data.promt);
