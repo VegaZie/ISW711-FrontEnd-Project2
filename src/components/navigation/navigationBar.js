@@ -13,6 +13,10 @@ const Navigation = ({ appName, userName, role }) => {
     navigate("/");
   };
 
+  const handleEditProfile = () => {
+    navigate("/profile")
+  }
+
   return (
     <div className="navigation">
     <div className="navigation__brand">
@@ -25,6 +29,7 @@ const Navigation = ({ appName, userName, role }) => {
         <span>{role}</span>
       </div>
     </div>
+    <Button onClick={handleEditProfile}>Editar Perfil</Button>
     <Button onClick={handleLogout}>Cerrar Sesión</Button>
   </div>
   );
