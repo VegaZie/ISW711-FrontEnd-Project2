@@ -87,7 +87,7 @@ const PromtCreatePopup = ({ onClose, onSucess, id, token }) => {
         userID: id,
         type: "images",
         tags: tags,
-        imageresponse: "",
+        imageresponse: [],
       };
 
       axios
@@ -101,7 +101,7 @@ const PromtCreatePopup = ({ onClose, onSucess, id, token }) => {
         })
         .catch((errorM) => {
           console.log(errorM);
-          setErrorMessage("Registro de promt fallido.");
+          setErrorMessage("Registro de promt fallido. " + errorM );
           setError(true);
         });
     }
