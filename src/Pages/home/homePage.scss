@@ -1,3 +1,4 @@
+/* Estilos generales de la página */
 .home-page {
   background-color: #111;
   padding: 16px;
@@ -39,5 +40,55 @@
     &:focus {
       outline: none;
     }
+  }
+}
+
+/* Estilos para la sección de filtros */
+.filter-section {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+
+  select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+
+  input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+
+  .react-tag-input {
+    .react-tag-input-tag {
+      background-color: #ccc;
+      border: none;
+      color: #333;
+      border-radius: 4px;
+      padding: 4px 8px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      cursor: pointer;
+    }
+
+    .react-tag-input-remove {
+      cursor: pointer;
+      margin-left: 5px;
+      color: red;
+      font-weight: bold;
+    }
+  }
+
+  button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 16px;
+    cursor: pointer;
   }
 }

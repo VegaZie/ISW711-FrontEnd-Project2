@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
+import { TagsInput } from "react-tag-input-component";
 import axios from "axios";
 
 import Navigation from "../../components/navigation/navigationBar";
@@ -15,6 +16,15 @@ import "./homePage.scss";
 const HomePage = () => {
   // Declaración del estado dataList usando useState
   const [dataList, setDataList] = useState([]);
+
+  // Estado para el tipo de filtro seleccionado
+  const [filterType, setFilterType] = useState("none");
+
+  // Estado para los tags en el filtro por tags
+  const [tags, setTags] = useState([]);
+
+  //Estado para el nombre en el filtro por nombre
+  const [filterName, setFilterName] = useState("none");
 
   // Estado para mostrar el mensaje de "No tienes promts registrados"
   const [showNoPromptsMessage, setShowNoPromptsMessage] = useState(false);
@@ -56,63 +66,65 @@ const HomePage = () => {
   };
   // Función para obtener los promts o usuarios según el rol
   const fetchData = useCallback(() => {
-    if (userRole) {
-      axios
-        .get(process.env.REACT_APP_USER, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then(function (response) {
-          setDataList(response.data);
-        })
-        .catch(function (error) {
-          setErrorMessage("Algo ha salido mal: " + error);
-          setError(true);
-        });
-    } else {
-      const graphqlQuery = {
-        query: `
-          query GetUserPromts($userID: String!) {
-            getUserPromts(user_id: $userID) {
-              id
-              name
-              model
-              input
-              instruction
-              promt
-              temperature
-              quantity
-              size
-              response
-              imageresponse {
-                url
+    if (filterName === "none" && tags.length === 0) {
+      if (userRole) {
+        axios
+          .get(process.env.REACT_APP_USER, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(function (response) {
+            setDataList(response.data);
+          })
+          .catch(function (error) {
+            setErrorMessage("Algo ha salido mal: " + error);
+            setError(true);
+          });
+      } else {
+        const graphqlQuery = {
+          query: `
+            query GetUserPromts($userID: String!) {
+              getUserPromts(user_id: $userID) {
+                id
+                name
+                model
+                input
+                instruction
+                promt
+                temperature
+                quantity
+                size
+                response
+                imageresponse {
+                  url
+                }
+                userID
+                tags
+                type
               }
-              userID
-              tags
-              type
             }
-          }
-        `,
-        variables: {
-          userID: userID,
-        },
-      };
-      axios
-        .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
-          headers: {
-            Authorization: `Bearer ${token}`,
+          `,
+          variables: {
+            userID: userID,
           },
-        })
-        .then(function (response) {
-          setDataList(response.data.data.getUserPromts);
-        })
-        .catch(function (error) {
-          setErrorMessage("Algo ha salido mal: " + error);
-          setError(true);
-        });
+        };
+        axios
+          .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then(function (response) {
+            setDataList(response.data.data.getUserPromts);
+          })
+          .catch(function (error) {
+            setErrorMessage("Algo ha salido mal: " + error);
+            setError(true);
+          });
+      }
     }
-  }, [userID, userRole, token]);
+  }, [userID, userRole, token, filterName, tags]);
 
   // Efecto para obtener la lista de promts o usuarios según el rol
   useEffect(() => {
@@ -137,9 +149,107 @@ const HomePage = () => {
     }
   };
 
+  const handleFilterTypeChange = (event) => {
+    setFilterType(event.target.value);
+  };
+
+  const handleFilterSubmit = () => {
+    if (filterType === "name") {
+      const graphqlQuery = {
+        query: `
+    query GetPromtsByName($user_id: String!, $name: String!) {
+      byName(user_id: $user_id, name: $name) {
+        id
+        name
+        model
+        input
+        instruction
+        promt
+        temperature
+        quantity
+        size
+        response
+        imageresponse {
+          url
+        }
+        userID
+        tags
+        type
+      }
+    }
+  `,
+        variables: {
+          user_id: userID, // Reemplaza con el ID del usuario
+          name: filterName,
+        },
+      };
+
+      axios
+        .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataList(response.data.data.byName);
+        })
+        .catch(function (error) {
+          setErrorMessage("Algo ha salido mal: " + error);
+          setError(true);
+        });
+        setTags([]);
+    } else if (filterType === "tags") {
+      const graphqlQuery = {
+        query: `
+    query GetPromtsByTags($user_id: String!, $tags: [String]!) {
+      byTags(user_id: $user_id, tags: $tags) {
+        id
+        name
+        model
+        input
+        instruction
+        promt
+        temperature
+        quantity
+        size
+        response
+        imageresponse {
+          url
+        }
+        userID
+        tags
+        type
+      }
+    }
+  `,
+        variables: {
+          user_id: userID,
+          tags: tags,
+        },
+      };
+
+      axios
+        .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then(function (response) {
+          setDataList(response.data.data.byTags);
+        })
+        .catch(function (error) {
+          setErrorMessage("Algo ha salido mal: " + error);
+          setError(true);
+        });
+        setFilterName("none");
+    } else if (filterType === "none") {
+      setFilterName("none");
+      setTags([]);
+    }
+  };
+
   return (
     <div className="home-page">
-      {/* Barra de navegación */}
       <Navigation
         appName="AI Promts"
         userName={name}
@@ -159,15 +269,41 @@ const HomePage = () => {
         </div>
       )}
 
+      {!userRole && (
+        <div className="filter-section">
+          <select value={filterType} onChange={handleFilterTypeChange}>
+            <option value="none">Sin Filtrar</option>
+            <option value="name">Filtrar por nombre</option>
+            <option value="tags">Filtrar por tags</option>
+          </select>
+          {filterType === "name" && (
+            <input
+              type="text"
+              placeholder="Buscar por nombre"
+              onChange={(e) => setFilterName(e.target.value)}
+            />
+          )}
+          {filterType === "tags" && (
+            <div className="react-tag-input">
+              <TagsInput
+                value={tags}
+                onChange={setTags}
+                name="tags"
+                placeHolder="Agrega tags"
+              />
+            </div>
+          )}
+          <button onClick={handleFilterSubmit}>Filtrar</button>
+        </div>
+      )}
+
       {dataList.length > 0 ? (
         // Mostrar elementos si dataList tiene datos
         <div className="home-page__content">
           <div className="home-page__card-container">
-            {/* Renderizar tarjetas */}
             {userRole ? (
               <div className="home-page__card-item">
                 {dataList.map((item) => (
-                  
                   <Card
                     key={item.id}
                     isAdmin={userRole}
