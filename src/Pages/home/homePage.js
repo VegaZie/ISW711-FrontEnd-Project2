@@ -98,7 +98,6 @@ const HomePage = () => {
           userID: userID,
         },
       };
-
       axios
         .post(process.env.REACT_APP_GRAPHQL, graphqlQuery, {
           headers: {
